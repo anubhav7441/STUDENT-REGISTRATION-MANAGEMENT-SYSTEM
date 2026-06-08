@@ -160,6 +160,7 @@ A confirmation mechanism is implemented before deleting records to prevent accid
 # 🏗️ System Architecture
 
 
+
 ```text
 STUDENT-MANAGEMENT-SYSTEM/
 │
