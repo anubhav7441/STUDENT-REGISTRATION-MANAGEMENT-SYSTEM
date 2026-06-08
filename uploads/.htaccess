@@ -1,0 +1,12 @@
+# Deny execution of any server-side scripts in uploads directory
+Options -ExecCGI -Indexes
+AddHandler cgi-script .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .sh .cgi .phar
+
+<FilesMatch "\.(php[0-9]?|phtml|phar|pl|py|jsp|asp|sh|cgi)$">
+    Require all denied
+</FilesMatch>
+
+# Allow only image types
+<FilesMatch "\.(jpg|jpeg|png|webp|gif)$">
+    Require all granted
+</FilesMatch>
