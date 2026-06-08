@@ -6,7 +6,7 @@
  */
 
 // ── Environment ──────────────────────────────────────────────
-define('APP_NAME',    'Student Registration Pro');
+define('APP_NAME',    'Student Registration Management System');
 define('APP_VERSION', '1.0.0');
 
 // *** CHANGE THIS to match your XAMPP subfolder name ***

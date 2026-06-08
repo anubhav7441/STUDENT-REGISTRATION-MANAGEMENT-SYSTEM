@@ -5,9 +5,7 @@
 
 'use strict';
 
-/* ══════════════════════════════════════════════════════════════
-   TOAST NOTIFICATION SYSTEM
-   ══════════════════════════════════════════════════════════════ */
+/* TOAST NOTIFICATION SYSTEM*/
 const Toast = (() => {
   const container = () => document.getElementById('toast-container');
 
@@ -36,16 +34,14 @@ const Toast = (() => {
   return { show };
 })();
 
-/* ══════════════════════════════════════════════════════════════
-   DELETE CONFIRMATION MODAL
-   ══════════════════════════════════════════════════════════════ */
+/* DELETE CONFIRMATION MODAL */
 const DeleteModal = (() => {
   let overlay, idInput, nameEl;
 
   function init() {
     overlay = document.getElementById('delete-modal');
     idInput = document.getElementById('delete-id');
-    nameEl  = document.getElementById('delete-name');
+    nameEl = document.getElementById('delete-name');
     if (!overlay) return;
 
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
@@ -56,7 +52,7 @@ const DeleteModal = (() => {
 
   function open(id, name) {
     if (!overlay) return;
-    idInput.value      = id;
+    idInput.value = id;
     nameEl.textContent = name;
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -72,28 +68,27 @@ const DeleteModal = (() => {
   return { init, open, close };
 })();
 
-window.confirmDelete    = (id, name) => DeleteModal.open(id, name);
+window.confirmDelete = (id, name) => DeleteModal.open(id, name);
 window.closeDeleteModal = () => DeleteModal.close();
 
-/* ══════════════════════════════════════════════════════════════
-   REAL-TIME FORM VALIDATION
+/* REAL-TIME FORM VALIDATION
    Error messages match PDF requirement exactly.
-   ══════════════════════════════════════════════════════════════ */
+   */
 const FormValidator = (() => {
 
   // Rules for standard input/select/textarea fields
   const rules = {
     full_name: {
       test: v => v.trim().length >= 2,
-      msg:  'Please enter your full name',
+      msg: 'Please enter your full name',
     },
     email: {
       test: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()),
-      msg:  'Please enter a valid email address',
+      msg: 'Please enter a valid email address',
     },
     phone: {
       test: v => /^\d{10}$/.test(String(v).replace(/\D/g, '')),
-      msg:  'Phone number must contain 10 digits',
+      msg: 'Phone number must contain 10 digits',
     },
     date_of_birth: {
       test: v => {
@@ -105,7 +100,7 @@ const FormValidator = (() => {
     },
     country: {
       test: v => v !== '' && v !== null,
-      msg:  'Country must be selected',
+      msg: 'Country must be selected',
     },
   };
 
@@ -115,17 +110,17 @@ const FormValidator = (() => {
     const group = field.closest('.form-group');
     if (!group) return;
     const errEl = group.querySelector('.form-error');
-    field.classList.toggle('valid',   valid);
+    field.classList.toggle('valid', valid);
     field.classList.toggle('invalid', !valid);
     if (errEl) errEl.textContent = valid ? '' : (msg || '');
   }
 
   function setGroupState(group, valid, msg) {
     if (!group) return;
-    const errEl  = group.querySelector('.form-error');
-    const box    = group.querySelector('.radio-group, .checkbox-grid');
+    const errEl = group.querySelector('.form-error');
+    const box = group.querySelector('.radio-group, .checkbox-grid');
     if (box) {
-      box.classList.toggle('group-valid',   valid);
+      box.classList.toggle('group-valid', valid);
       box.classList.toggle('group-invalid', !valid);
     }
     if (errEl) errEl.textContent = valid ? '' : (msg || '');
@@ -159,7 +154,7 @@ const FormValidator = (() => {
     const radios = form.querySelectorAll(`input[name="${name}"]`);
     if (!radios.length) return true;
     const checked = [...radios].some(r => r.checked);
-    const group   = radios[0].closest('.form-group');
+    const group = radios[0].closest('.form-group');
     setGroupState(group, checked, 'Please select your gender');
     return checked;
   }
@@ -171,12 +166,12 @@ const FormValidator = (() => {
 
     // Standard required fields
     form.querySelectorAll('input[required]:not([type="radio"]), select[required], textarea[required]')
-        .forEach(f => { if (!validateField(f)) allOk = false; });
+      .forEach(f => { if (!validateField(f)) allOk = false; });
 
     // Radio groups
     const radioGroups = new Set();
     form.querySelectorAll('input[type="radio"][required]')
-        .forEach(r => radioGroups.add(r.name));
+      .forEach(r => radioGroups.add(r.name));
     radioGroups.forEach(name => {
       if (!validateRadioGroup(form, name)) allOk = false;
     });
@@ -191,15 +186,15 @@ const FormValidator = (() => {
 
     // Input/select/textarea — validate on blur & live correction
     form.querySelectorAll('input:not([type="radio"]):not([type="checkbox"]):not([type="file"]), select, textarea')
-        .forEach(field => {
-          field.addEventListener('blur', () => validateField(field));
-          field.addEventListener('input', () => {
-            if (field.classList.contains('valid') || field.classList.contains('invalid')) {
-              validateField(field);
-            }
-          });
-          field.addEventListener('change', () => validateField(field));
+      .forEach(field => {
+        field.addEventListener('blur', () => validateField(field));
+        field.addEventListener('input', () => {
+          if (field.classList.contains('valid') || field.classList.contains('invalid')) {
+            validateField(field);
+          }
         });
+        field.addEventListener('change', () => validateField(field));
+      });
 
     // Radio buttons — validate on change
     form.querySelectorAll('input[type="radio"]').forEach(radio => {
@@ -222,12 +217,10 @@ const FormValidator = (() => {
   return { attachTo };
 })();
 
-/* ══════════════════════════════════════════════════════════════
-   IMAGE UPLOAD PREVIEW
-   ══════════════════════════════════════════════════════════════ */
+/* IMAGE UPLOAD PREVIEW*/
 function initFilePreview() {
-  const input     = document.getElementById('profile_image');
-  const preview   = document.getElementById('image-preview');
+  const input = document.getElementById('profile_image');
+  const preview = document.getElementById('image-preview');
   const nameLabel = document.getElementById('file-name-label');
   if (!input || !preview) return;
 
@@ -249,7 +242,7 @@ function initFilePreview() {
 
     const reader = new FileReader();
     reader.onload = e => {
-      preview.src           = e.target.result;
+      preview.src = e.target.result;
       preview.style.display = 'block';
     };
     reader.readAsDataURL(file);
@@ -257,9 +250,7 @@ function initFilePreview() {
   });
 }
 
-/* ══════════════════════════════════════════════════════════════
-   SEARCH — debounced auto-submit
-   ══════════════════════════════════════════════════════════════ */
+/* SEARCH — debounced auto-submit */
 function initSearch() {
   const input = document.getElementById('search-input');
   if (!input) return;
@@ -273,17 +264,15 @@ function initSearch() {
   });
 }
 
-/* ══════════════════════════════════════════════════════════════
-   FLASH TOASTS — from URL query params after redirect
-   ══════════════════════════════════════════════════════════════ */
+/* FLASH TOASTS — from URL query params after redirect */
 function initFlashMessages() {
   const p = new URLSearchParams(location.search);
   const s = p.get('success');
   const e = p.get('error');
 
-  if (s === 'added')    Toast.show('🎉 Student registered successfully!', 'success');
-  if (s === 'updated')  Toast.show('✏️ Student record updated successfully.', 'success');
-  if (s === 'deleted')  Toast.show('🗑️ Student deleted successfully.', 'success');
+  if (s === 'added') Toast.show('🎉 Student registered successfully!', 'success');
+  if (s === 'updated') Toast.show('✏️ Student record updated successfully.', 'success');
+  if (s === 'deleted') Toast.show('🗑️ Student deleted successfully.', 'success');
   if (e === 'notfound') Toast.show('Student record not found.', 'error');
 
   // Clean URL so toast doesn't re-fire on refresh
@@ -296,18 +285,14 @@ function initFlashMessages() {
   }
 }
 
-/* ══════════════════════════════════════════════════════════════
-   UTILITY
-   ══════════════════════════════════════════════════════════════ */
+/* UTILITY */
 function escapeHtml(str) {
   return String(str)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-/* ══════════════════════════════════════════════════════════════
-   BOOTSTRAP
-   ══════════════════════════════════════════════════════════════ */
+/* BOOTSTRAP */
 document.addEventListener('DOMContentLoaded', () => {
   DeleteModal.init();
   initFlashMessages();
